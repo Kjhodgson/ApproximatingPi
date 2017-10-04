@@ -26,7 +26,7 @@ namespace MonteCarloPiApproximation
             MonteCarloPiApproximation();
 
             Console.WriteLine("Elasped time: (time in ms)" + sw.ElapsedMilliseconds);
-            long timeSeconds = sw.ElapsedMilliseconds / 1000;
+            decimal timeSeconds = decimal.Divide((decimal)sw.ElapsedMilliseconds, (decimal)1000);
             Console.WriteLine("\nTime in seconds:" + timeSeconds);
 
             sw.Stop();
@@ -34,10 +34,10 @@ namespace MonteCarloPiApproximation
 
             Console.WriteLine("\nNow running the program with parallelism");
 
-            MonetCarloPiParallel();
+            MonteCarloPiParallel();
 
             Console.WriteLine("Elasped time: (time in ms)" + sw.ElapsedMilliseconds);
-            timeSeconds = sw.ElapsedMilliseconds / 1000;
+            timeSeconds =  decimal.Divide((decimal) sw.ElapsedMilliseconds, (decimal) 1000);
             Console.WriteLine("\nTime in seconds:" + timeSeconds);
 
             sw.Stop(); 
@@ -64,13 +64,12 @@ namespace MonteCarloPiApproximation
                     inCircle++;
 
                 total++;
-                piApprox = 4 * ((double)inCircle / (double)total);
             }
-          
+            piApprox = 4 * ((double)inCircle / (double)total);
             Console.WriteLine("\nApproximated Pi = {0}", piApprox);
         }
 
-        private static void MonetCarloPiParallel()
+        private static void MonteCarloPiParallel()
         {
             double piApprox = 0;
             int TotalinCircle = 0;
@@ -89,13 +88,12 @@ namespace MonteCarloPiApproximation
                 tasks[coreNumber] = Task.Factory.StartNew(() =>
                 {
                     int taskInCircle = 0;
-
+                    Random rand = new Random();
                     // For loop used to divided the work among the cores. 
                     for (int j = 0; j < iterations / numberOfCores; j++)
                     {
-                        
-                        x = new Random().NextDouble();
-                        y = new Random().NextDouble();
+                        x = rand.NextDouble();
+                        y = rand.NextDouble();
                         if ((Math.Sqrt((x * x) + (y * y)) <= 1.0)) // <= 1 implies it is in the circle, anything outside is discarded but counted
                             taskInCircle++;
                     }
